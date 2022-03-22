@@ -11,8 +11,9 @@ module.exports.stFormatscontroller = {
         address,
         price,
       });
+      res.json(stFormat);
     } catch (e) {
-      res.status(401).json('Ошибка' + e.toString());
+      res.status(401).json('Ошибка ' + e.toString());
     }
   },
   getAllStFormats: async (req, res) => {
@@ -20,7 +21,7 @@ module.exports.stFormatscontroller = {
       const stFormat = await StFormat.find();
       res.json(stFormat);
     } catch (e) {
-      res.status(401).json('Ошибка' + e.toString());
+      res.status(401).json('Ошибка ' + e.toString());
     }
   },
 };
