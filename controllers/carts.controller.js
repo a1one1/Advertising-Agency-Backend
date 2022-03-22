@@ -17,4 +17,14 @@ module.exports.cartsController = {
       res.status(401).json('Ошибка ' + e.toString());
     }
   },
+  addCartProduct: async (req, res) => {
+    try {
+      const cart = await Cart.findOne({ user: req.params.userId });
+      await cart.update({
+        $push: { product: req.body.product },
+      });
+    } catch (e) {
+      res.status(401).json('Ошибка ' + e.toString());
+    }
+  },
 };
