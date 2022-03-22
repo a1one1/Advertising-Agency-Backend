@@ -13,7 +13,7 @@ module.exports.billboardsController = {
       });
       res.json(billboard);
     } catch (e) {
-      res.status(401).json('Ошибка' + e.toString());
+      res.status(401).json('Ошибка ' + e.toString());
     }
   },
   getAllBillboards: async (req, res) => {
