@@ -21,7 +21,7 @@ module.exports.billboardsController = {
       const billboard = await Billboard.find();
       res.json(billboard);
     } catch (e) {
-      res.status(401).json('Ошибка' + e.toString());
+      res.status(401).json('Ошибка ' + e.toString());
     }
   },
 };
