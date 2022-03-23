@@ -11,15 +11,18 @@ module.exports.reviewsController = {
   },
   addReview: async (req, res) => {
     try {
-      const { text, rating } = req.body;
+      const { text, yes, no } = req.body;
       const review = await Review.create({
-        user: req.user.id,
         text,
-        rating,
+        user: req.user.id,
+        recommendation: {
+          yes,
+          no,
+        },
       });
       res.json(review);
     } catch (e) {
-      req.status(401).json('Ошибка ' + e.toString());
+      res.status(401).json('Ошибка ' + e.toString());
     }
   },
   deleteReview: async (req, res) => {
