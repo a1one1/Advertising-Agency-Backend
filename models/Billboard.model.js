@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const billboardSchema = mongoose.Schema({
   name: {
+    type: String,
     default: 'Билборд',
   },
   sideA: {
