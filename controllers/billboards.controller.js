@@ -25,4 +25,19 @@ module.exports.billboardsController = {
       res.status(401).json('Ошибка ' + e.toString());
     }
   },
+  patchBillboard: async (req, res) => {
+    try {
+      const { sideA, sideB } = req.body;
+      const billboard = await Billboard.findByIdAndUpdate(
+        req.params.billboardId,
+        {
+          sideA,
+          sideB,
+        },
+      );
+      res.json(billboard);
+    } catch (e) {
+      res.status(401).json('Ошибка ' + e.toString());
+    }
+  },
 };

@@ -25,4 +25,16 @@ module.exports.stFormatscontroller = {
       res.status(401).json('Ошибка ' + e.toString());
     }
   },
+  patchStFormat: async (req, res) => {
+    try {
+      const { sideA, sideB } = req.body;
+      const stFormat = await StFormat.findByIdAndUpdate(req.params.stFormatId, {
+        sideA,
+        sideB,
+      });
+      res.json(stFormat);
+    } catch (e) {
+      res.status(401).json('Ошибка ' + e.toString());
+    }
+  },
 };
