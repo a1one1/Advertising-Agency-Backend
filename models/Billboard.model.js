@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const billboardSchema = mongoose.Schema({
+  name: {
+    default: 'Билборд',
+  },
   sideA: {
     type: Boolean,
     default: true,

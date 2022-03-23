@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const stFormatSchema = mongoose.Schema({
+  name: {
+    default: 'Сити-Формат',
+  },
   sideA: {
     type: Boolean,
     default: true,

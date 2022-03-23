@@ -3,8 +3,9 @@ const visitCard = require('../models/VisitCard.model');
 module.exports.visitCardsController = {
   addVisitCards: async (req, res) => {
     try {
-      const { typePaper, count, delivery, price } = req.body;
+      const { name, typePaper, count, delivery, price } = req.body;
       const visitCards = await visitCard.create({
+        name,
         typePaper,
         count,
         delivery,

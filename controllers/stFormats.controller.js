@@ -3,8 +3,9 @@ const StFormat = require('../models/StFormat.model');
 module.exports.stFormatscontroller = {
   addStFormat: async (req, res) => {
     try {
-      const { sideA, sideB, image, address, price } = req.body;
+      const { name, sideA, sideB, image, address, price } = req.body;
       const stFormat = await StFormat.create({
+        name,
         sideA,
         sideB,
         image,
