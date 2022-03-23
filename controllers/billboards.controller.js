@@ -3,8 +3,9 @@ const Billboard = require('../models/Billboard.model');
 module.exports.billboardsController = {
   addBillboard: async (req, res) => {
     try {
-      const { sideA, sideB, image, address, price } = req.body;
+      const { name, sideA, sideB, image, address, price } = req.body;
       const billboard = await Billboard.create({
+        name,
         sideA,
         sideB,
         image,

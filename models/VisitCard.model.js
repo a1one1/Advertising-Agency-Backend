@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const visitCardSchema = mongoose.Schema({
+  name: {
+    default: 'Визитки',
+  },
   typePaper: {
     type: String,
     required: true,
