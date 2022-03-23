@@ -6,7 +6,14 @@ const cartSchema = mongoose.Schema({
     ref: 'User',
   },
   product: {
-    rents: [],
+    rents: [
+      {
+        adress: String,
+        image: String,
+        sideA: Boolean,
+        sideB: Boolean,
+      },
+    ],
     sales: [],
   },
   total: {
