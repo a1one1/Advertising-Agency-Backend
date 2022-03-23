@@ -17,12 +17,28 @@ module.exports.cartsController = {
       res.status(401).json('Ошибка ' + e.toString());
     }
   },
-  addCartProduct: async (req, res) => {
+  addCartRents: async (req, res) => {
     try {
       const cart = await Cart.findOne({ user: req.params.userId });
       await cart.update({
-        $push: { product: req.body.product },
+        product: {
+          $push: { rents: req.body.rents },
+        },
       });
+      res.json(cart);
+    } catch (e) {
+      res.status(401).json('Ошибка ' + e.toString());
+    }
+  },
+  addCartSales: async (req, res) => {
+    try {
+      const cart = await Cart.findOne({ user: req.params.userId });
+      await cart.update({
+        product: {
+          $push: { sales: req.body.sales },
+        },
+      });
+      res.json(cart);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
