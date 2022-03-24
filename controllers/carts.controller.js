@@ -12,7 +12,7 @@ module.exports.cartsController = {
   },
   getIdCart: async (req, res) => {
     try {
-      const cart = await Cart.findOne({ user: req.user.id });
+      const cart = await Cart.findOne({ user: req.params.userId });
       res.json(cart);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
@@ -20,35 +20,20 @@ module.exports.cartsController = {
   },
   addCartRents: async (req, res) => {
     try {
-      const billboard = await Billboard.findById(req.params.billboardId)
-      
-      let ress = billboard
-      ress.sideA = req.body.sideA
-      ress.sideB = req.body.sideB
-      console.log(ress)
-      
+      const billboard = await Billboard.findById(req.params.billboardId);
+      let newBillboard = billboard;
+      newBillboard.sideA = req.body.sideA;
+      newBillboard.sideB = req.body.sideB;
       const cart = await Cart.findOne({ user: req.user.id });
       await cart.update({
         product: {
           ...cart.product,
-          rents: [...cart.product.rents, ress],
+          rents: [...cart.product.rents, newBillboard],
         },
+        total: cart.product.rents.reduce((acc, rent) => (acc += rent.price), total)
       });
-      const responce = await Cart.findOne({ user: req.user.id });
-      res.json(responce);
-    } catch (e) {
-      res.status(401).json('Ошибка ' + e.toString());
-    }
-  },
-  addCartSales: async (req, res) => {
-    try {
-      const cart = await Cart.findOne({ user: req.params.userId });
-      await cart.update({
-        product: {
-          $push: { sales: req.body.sales },
-        },
-      });
-      res.json(cart);
+      const json = await Cart.findOne({ user: req.user.id });
+      res.json(json);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
