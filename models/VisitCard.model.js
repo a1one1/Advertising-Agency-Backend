@@ -6,7 +6,7 @@ const visitCardSchema = mongoose.Schema({
     default: 'Визитки',
   },
   typePaper: {
-    type: String,
+    type: Number,
     required: true,
   },
   count: {

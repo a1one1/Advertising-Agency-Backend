@@ -1,3 +1,4 @@
+const Cart = require('../models/Cart.model');
 const visitCard = require('../models/VisitCard.model');
 
 module.exports.visitCardsController = {
@@ -10,6 +11,19 @@ module.exports.visitCardsController = {
         count,
         delivery,
         price,
+      });
+      const cart = await Cart.findOne({ user: req.user.id });
+      await cart.update({
+        product: {
+          $push: {
+            sales: {
+              typePaper,
+              count,
+              delivery,
+              price,
+            },
+          },
+        },
       });
       res.json(visitCards);
     } catch (e) {
