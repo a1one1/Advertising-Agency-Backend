@@ -30,7 +30,10 @@ module.exports.cartsController = {
           ...cart.product,
           rents: [...cart.product.rents, newBillboard],
         },
-        total: cart.product.rents.reduce((acc, rent) => (acc += rent.price), cart.total)
+        total: cart.product.rents.reduce(
+          (acc, rent) => (acc += rent.price),
+          cart.total,
+        ),
       });
       const json = await Cart.findOne({ user: req.user.id });
       res.json(json);
