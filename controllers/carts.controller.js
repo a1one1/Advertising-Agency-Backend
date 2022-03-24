@@ -12,7 +12,7 @@ module.exports.cartsController = {
   },
   getIdCart: async (req, res) => {
     try {
-      const cart = await Cart.findOne({ user: req.params.userId });
+      const cart = await Cart.findOne({ user: req.user.id });
       res.json(cart);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
