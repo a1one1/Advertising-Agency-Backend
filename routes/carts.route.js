@@ -12,6 +12,6 @@ router.patch(
   cartsController.addCartRents,
 );
 router.get('/cart/:userId', authMiddleware, cartsController.getIdCart);
-router.patch('/cart/:userId/rents', cartsController.addCartRents);
+router.patch('/cart/:userId/rents', cartsController.addCartRentsBillboard);
 
 module.exports = router;

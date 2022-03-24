@@ -18,7 +18,7 @@ module.exports.cartsController = {
       res.status(401).json('Ошибка ' + e.toString());
     }
   },
-  addCartRents: async (req, res) => {
+  addCartRentsBillboard: async (req, res) => {
     try {
       const billboard = await Billboard.findById(req.params.billboardId);
       let newBillboard = billboard;
@@ -30,7 +30,7 @@ module.exports.cartsController = {
           ...cart.product,
           rents: [...cart.product.rents, newBillboard],
         },
-        total: cart.product.rents.reduce((acc, rent) => (acc += rent.price), total)
+        total: cart.product.rents.reduce((acc, rent) => (acc += rent.price), cart.total)
       });
       const json = await Cart.findOne({ user: req.user.id });
       res.json(json);
