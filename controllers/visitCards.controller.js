@@ -5,23 +5,21 @@ module.exports.visitCardsController = {
   addVisitCards: async (req, res) => {
     try {
       const { typePaper, count, delivery, price } = req.body;
-      const visit = await visitCard.create({
+      const visitCrd = await visitCard.create({
         typePaper,
         count,
         delivery,
         price,
       });
-      
-      const cart = await Cart.findOneAndUpdate({ user: req.user.id }, );
-  
+      const cart = await Cart.findOneAndUpdate({ user: req.user.id });
       await cart.update({
         product: {
           ...cart.product,
-          sales: [...cart.product.sales, visit]
+          sales: [...cart.product.sales, visitCrd],
         },
       });
-      const cartRes = await Cart.findOne({ user: req.user.id });
-      res.json(cartRes);
+      const cartJson = await Cart.findOne({ user: req.user.id });
+      res.json(cartJson);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
@@ -29,20 +27,19 @@ module.exports.visitCardsController = {
 
   deleteVisitCards: async (req, res) => {
     try {
-      const visit = await visitCard.findByIdAndDelete(req.params.id);
-
-      const cart = await Cart.findOne({user: req.user.id});
+      const visitCrd = await visitCard.findByIdAndDelete(req.params.id);
+      const cart = await Cart.findOne({ user: req.user.id });
       await cart.update({
         product: {
-          sales: []
-        }
-      })
+          sales: [],
+        },
+      });
+      res.json(visitCrd);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
-  }
+  },
 };
-
 
 // const comment = await Comment.findByIdAndDelete(req.params.id);
 
