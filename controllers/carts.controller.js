@@ -1,3 +1,4 @@
+const Billboard = require('../models/Billboard.model');
 const Cart = require('../models/Cart.model');
 
 module.exports.cartsController = {
@@ -19,13 +20,22 @@ module.exports.cartsController = {
   },
   addCartRents: async (req, res) => {
     try {
-      const cart = await Cart.findOne({ user: req.params.userId });
+      const billboard = await Billboard.findById(req.params.billboardId)
+      
+      let ress = billboard
+      ress.sideA = req.body.sideA
+      ress.sideB = req.body.sideB
+      console.log(ress)
+      
+      const cart = await Cart.findOne({ user: req.user.id });
       await cart.update({
         product: {
-          $push: { rents: req.body.rents },
+          ...cart.product,
+          rents: [...cart.product.rents, ress],
         },
       });
-      res.json(cart);
+      const responce = await Cart.findOne({ user: req.user.id });
+      res.json(responce);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
