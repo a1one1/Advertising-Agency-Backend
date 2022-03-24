@@ -9,9 +9,8 @@ router.get('/cart/:userId', cartsController.getIdCart);
 router.patch(
   '/cart/billboard/:billboardId/rents',
   authMiddleware,
-  cartsController.addCartRents,
+  cartsController.addCartRentsBillboard,
 );
 router.get('/cart/:userId', authMiddleware, cartsController.getIdCart);
-router.patch('/cart/:userId/rents', cartsController.addCartRentsBillboard);
 
 module.exports = router;
