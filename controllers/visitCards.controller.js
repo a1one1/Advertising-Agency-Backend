@@ -17,7 +17,10 @@ module.exports.visitCardsController = {
           ...cart.product,
           sales: [...cart.product.sales, visitCrd],
         },
-        total: cart.product.sales.reduce((acc, sale) => (acc += sale), total)
+        total: cart.product.sales.reduce(
+          (acc, sale) => (acc += sale),
+          cart.total,
+        ),
       });
       const cartJson = await Cart.findOne({ user: req.user.id });
       res.json(cartJson);
@@ -32,7 +35,13 @@ module.exports.visitCardsController = {
       await cart.update({
         product: {
           ...cart.product,
-          sales: [...cart.product.sales.filter(sale => sale._id !== req.body.id)]
+          sales: [
+            ...cart.product.sales.filter((sale) => sale._id !== req.body.id),
+          ],
+          total: cart.product.sales.reduce(
+            (acc, sale) => (acc -= sale.price),
+            cart.total,
+          ),
         },
       });
       res.json(visitCrd);
@@ -41,5 +50,3 @@ module.exports.visitCardsController = {
     }
   },
 };
-
-
