@@ -22,14 +22,24 @@ module.exports.purchasedsController = {
   addItemsToPurchased: async (req, res) => {
     try {
       const client = await User.findOne({ _id: req.user.id });
-      let cart = await Cart.findOne({user: req.user.id})
-    //   const purchased = await Purchased.findOneAndUpdate(
-    //     { user: req.user.id },
-    //     {
-    //       phone: client.phone,
-
-    //     },
-    //   );
+      const cart = await Cart.findOne({ user: req.user.id });
+      const purchased = await Purchased.findOne({ user: req.user.id });
+      await purchased.update({
+        phoneClient: client.phone,
+        buy: {
+          ...purchased.buy,
+          rents: [...purchased.buy.rents, ...cart.product.rents],
+          sales: [...purchased.buy.sales, ...cart.product.sales],
+        },
+      });
+      await cart.update({
+        product: {
+          rents: [],
+          sales: [],
+        },
+        total: 0,
+      });
+      res.json(purchased);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }

@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const purchasedSchema = mongoose.Schema({
   phoneClient: {
     type: Number,
-    required: true,
   },
   buy: {
     sales: [],
