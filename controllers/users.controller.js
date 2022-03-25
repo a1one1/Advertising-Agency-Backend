@@ -2,6 +2,7 @@ const User = require('../models/User.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Cart = require('../models/Cart.model');
+const Purchased = require('../models/Purchased.model');
 
 module.exports.usersController = {
   getAllUsers: async (req, res) => {
@@ -28,6 +29,10 @@ module.exports.usersController = {
       });
 
       await Cart.create({
+        user: user._id,
+      });
+
+      await Purchased.create({
         user: user._id,
       });
 
