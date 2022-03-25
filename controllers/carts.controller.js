@@ -26,15 +26,16 @@ module.exports.cartsController = {
       newBillboard.sideA = req.body.sideA;
       newBillboard.sideB = req.body.sideB;
       const cart = await Cart.findOne({ user: req.user.id });
+      if (newsStFormat.sideA && newsStFormat.sideA) {
+        newsStFormat.price = newsStFormat.price * 2;
+      }
+      const recalculation = (cart.total += newsStFormat.price);
       await cart.update({
         product: {
           ...cart.product,
           rents: [...cart.product.rents, newBillboard],
         },
-        total: cart.product.rents.reduce(
-          (acc, rent) => (acc += rent.price),
-          cart.total,
-        ),
+        total: recalculation,
       });
       const json = await Cart.findOne({ user: req.user.id });
       res.json(json);
@@ -49,18 +50,42 @@ module.exports.cartsController = {
       newsStFormat.sideA = req.body.sideA;
       newsStFormat.sideB = req.body.sideB;
       const cart = await Cart.findOne({ user: req.user.id });
+      if (newsStFormat.sideA && newsStFormat.sideA) {
+        newsStFormat.price = newsStFormat.price * 2;
+      }
+      const recalculation = (cart.total += newsStFormat.price);
       await cart.update({
         product: {
           ...cart.product,
           rents: [...cart.product.rents, newsStFormat],
         },
-        total: cart.product.rents.reduce(
-          (acc, rent) => (acc += rent.price),
-          cart.total,
-        ),
+        total: recalculation,
       });
       const json = await Cart.findOne({ user: req.user.id });
       res.json(json);
+    } catch (e) {
+      res.status(401).json('Ошибка ' + e.toString());
+    }
+  },
+  deleteCartItem: async (req, res) => {
+    try {
+      const cart = await Cart.findOne({ user: req.user.id });
+      const item = cart.product.rents.filter(
+        (item) => item._id.toString() === req.body.id,
+      );
+      const recalculation = (cart.total -= item[0].price);
+      await cart.update({
+        product: {
+          ...cart.product,
+          rents: [
+            ...cart.product.rents.filter(
+              (rent) => String(rent._id) !== req.body.id,
+            ),
+          ],
+        },
+        total: recalculation,
+      });
+      res.json(cart);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }

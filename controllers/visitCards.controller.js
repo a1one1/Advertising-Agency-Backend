@@ -16,9 +16,9 @@ module.exports.visitCardsController = {
       await cart.update({
         product: {
           ...cart.product,
-          sales: [...cart.product.sales, visit],
+          sales: [...cart.product.sales, visit]
         },
-        total: result,
+        total: result
       });
       const cartRes = await Cart.findOne({ user: req.user.id });
       res.json(visit);
@@ -30,23 +30,23 @@ module.exports.visitCardsController = {
   deleteVisitCard: async (req, res) => {
     try {
       const visit = await visitCard.findById(req.params.id);
-      const price = visit.price;
-      visit.remove();
-      const cart = await Cart.findOne({ user: req.user.id });
-      const sales = cart.product.sales.filter((sale) => {
-        return String(sale._id) !== req.params.id;
+      const price = visit.price
+      visit.remove()
+      const cart = await Cart.findOne({user: req.user.id});
+      const sales = cart.product.sales.filter(sale => {
+        return String(sale._id) !== req.params.id
       });
-      const result = cart.total - price;
+      const result = cart.total - price
       await cart.update({
         product: {
           ...cart.product,
-          sales: sales,
+          sales: sales
         },
-        total: result,
-      });
-      res.json(visit);
+        total: result
+      })
+      res.json(visit)
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
-  },
+  }
 };
