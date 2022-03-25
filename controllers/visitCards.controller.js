@@ -5,48 +5,56 @@ module.exports.visitCardsController = {
   addVisitCard: async (req, res) => {
     try {
       const { typePaper, count, delivery, price } = req.body;
-      const visitCrd = await visitCard.create({
+      const visit = await visitCard.create({
         typePaper,
         count,
         delivery,
         price,
       });
-      const cart = await Cart.findOneAndUpdate({ user: req.user.id });
+      
+      const cart = await Cart.findOne({ user: req.user.id });
+  
+      const result = cart.total + price;
       await cart.update({
         product: {
           ...cart.product,
-          sales: [...cart.product.sales, visitCrd],
+          sales: [...cart.product.sales, visit]
         },
-        total: cart.product.sales.reduce(
-          (acc, sale) => (acc += sale),
-          cart.total,
-        ),
+        total: result
       });
-      const cartJson = await Cart.findOne({ user: req.user.id });
-      res.json(cartJson);
+      const cartRes = await Cart.findOne({ user: req.user.id });
+      res.json(visit);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
   },
+
   deleteVisitCard: async (req, res) => {
     try {
-      const visitCrd = await visitCard.findByIdAndDelete(req.params.id);
-      const cart = await Cart.findOne({ user: req.user.id });
+      const visit = await visitCard.findById(req.params.id);
+      const price = visit.price
+      visit.remove()
+      
+      const cart = await Cart.findOne({user: req.user.id});
+
+      const sales = cart.product.sales.filter(sale => {
+        return String(sale._id) !== req.params.id
+      });
+      
+
+
+      const result = cart.total - price
+
       await cart.update({
         product: {
           ...cart.product,
-          sales: [
-            ...cart.product.sales.filter((sale) => sale._id !== req.body.id),
-          ],
-          total: cart.product.sales.reduce(
-            (acc, sale) => (acc -= sale.price),
-            cart.total,
-          ),
+          sales: sales
         },
-      });
-      res.json(visitCrd);
+        total: result
+      })
+      res.json(visit)
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
-  },
+  }
 };
