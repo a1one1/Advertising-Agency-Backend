@@ -9,6 +9,6 @@ router.use(require('./reviews.route'))
 router.use(require('./carts.route'));
 router.use(require('./users.route'));
 router.use(require('./visitCards.route'))
-
+router.use(require('./purchaseds.route'))
 
 module.exports = router;

@@ -5,12 +5,16 @@ const authMiddleware = require('../middlewares/auth.middleware');
 const router = Router();
 
 router.get('/carts', cartsController.getAllCarts);
-router.get('/cart/:userId', cartsController.getIdCart);
 router.patch(
   '/cart/billboard/:billboardId/rents',
   authMiddleware,
   cartsController.addCartRentsBillboard,
 );
-router.get('/cart/:userId', authMiddleware, cartsController.getIdCart);
+router.patch(
+  '/cart/stFormat/:stFormatId/rents',
+  authMiddleware,
+  cartsController.addCartRentsStFormat,
+);
+router.get('/cart/user', authMiddleware, cartsController.getIdCart);
 
 module.exports = router;
