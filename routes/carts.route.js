@@ -8,13 +8,15 @@ router.get('/carts', cartsController.getAllCarts);
 router.patch(
   '/cart/billboard/:billboardId/rents',
   authMiddleware,
-  cartsController.addCartRentsBillboard,
+  cartsController.addBillboardToCart,
 );
 router.patch(
   '/cart/stFormat/:stFormatId/rents',
   authMiddleware,
-  cartsController.addCartRentsStFormat,
+  cartsController.addSTFormatToCart,
 );
+router.delete('/cart/delete/rent', authMiddleware, cartsController.deleteItemFromCart)
+router.get('/cart/user', authMiddleware, cartsController.getCartById);
 router.delete(
   '/cart/delete/rent',
   authMiddleware,

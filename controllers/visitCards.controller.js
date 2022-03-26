@@ -2,7 +2,7 @@ const Cart = require('../models/Cart.model');
 const visitCard = require('../models/VisitCard.model');
 
 module.exports.visitCardsController = {
-  addVisitCard: async (req, res) => {
+  addVisitCardToCart: async (req, res) => {
     try {
       const { typePaper, count, delivery, price } = req.body;
       const visitCrd = await visitCard.create({
@@ -26,7 +26,7 @@ module.exports.visitCardsController = {
     }
   },
 
-  deleteVisitCard: async (req, res) => {
+  deleteVisitCardFromCart: async (req, res) => {
     try {
       const visitCrd = await visitCard.findById(req.params.id);
       const price = visitCrd.price;
