@@ -27,19 +27,20 @@ module.exports.cartsController = {
       newBillboard.sideB = req.body.sideB;
       const cart = await Cart.findOne({ user: req.user.id });
       if (newBillboard.sideA && newBillboard.sideB) {
-      if (newBillboard.sideA && newBillboard.sideA) {
-        newBillboard.price = newBillboard.price * 2;
+        if (newBillboard.sideA && newBillboard.sideA) {
+          newBillboard.price = newBillboard.price * 2;
+        }
+        const recalculation = (cart.total += newBillboard.price);
+        await cart.update({
+          product: {
+            ...cart.product,
+            rents: [...cart.product.rents, newBillboard],
+          },
+          total: recalculation,
+        });
+        const json = await Cart.findOne({ user: req.user.id });
+        res.json(json);
       }
-      const recalculation = (cart.total += newBillboard.price);
-      await cart.update({
-        product: {
-          ...cart.product,
-          rents: [...cart.product.rents, newBillboard],
-        },
-        total: recalculation,
-      });
-      const json = await Cart.findOne({ user: req.user.id });
-      res.json(json);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
