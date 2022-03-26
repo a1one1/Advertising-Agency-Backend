@@ -11,7 +11,7 @@ module.exports.cartsController = {
       res.status(401).json('Ошибка ' + e.toString());
     }
   },
-  getIdCart: async (req, res) => {
+  getCartById: async (req, res) => {
     try {
       const cart = await Cart.findOne({ user: req.user.id });
       res.json(cart);
@@ -19,17 +19,17 @@ module.exports.cartsController = {
       res.status(401).json('Ошибка ' + e.toString());
     }
   },
-  addCartRentsBillboard: async (req, res) => {
+  addBillboardToCart: async (req, res) => {
     try {
       const billboard = await Billboard.findById(req.params.billboardId);
       let newBillboard = billboard;
       newBillboard.sideA = req.body.sideA;
       newBillboard.sideB = req.body.sideB;
       const cart = await Cart.findOne({ user: req.user.id });
-      if (newsStFormat.sideA && newsStFormat.sideA) {
-        newsStFormat.price = newsStFormat.price * 2;
+      if (newBillboard.sideA && newBillboard.sideB) {
+        newBillboard.price = newBillboard.price * 2;
       }
-      const recalculation = (cart.total += newsStFormat.price);
+      const recalculation = (cart.total += newBillboard.price);
       await cart.update({
         product: {
           ...cart.product,
@@ -43,21 +43,21 @@ module.exports.cartsController = {
       res.status(401).json('Ошибка ' + e.toString());
     }
   },
-  addCartRentsStFormat: async (req, res) => {
+  addSTFormatToCart: async (req, res) => {
     try {
       const stFormat = await StFormat.findById(req.params.stFormatId);
-      let newsStFormat = stFormat;
-      newsStFormat.sideA = req.body.sideA;
-      newsStFormat.sideB = req.body.sideB;
+      let newStFormat = stFormat;
+      newStFormat.sideA = req.body.sideA;
+      newStFormat.sideB = req.body.sideB;
       const cart = await Cart.findOne({ user: req.user.id });
-      if (newsStFormat.sideA && newsStFormat.sideA) {
-        newsStFormat.price = newsStFormat.price * 2;
+      if (newStFormat.sideA && newStFormat.sideA) {
+        newStFormat.price = newStFormat.price * 2;
       }
-      const recalculation = (cart.total += newsStFormat.price);
+      const recalculation = (cart.total += newStFormat.price);
       await cart.update({
         product: {
           ...cart.product,
-          rents: [...cart.product.rents, newsStFormat],
+          rents: [...cart.product.rents, newStFormat],
         },
         total: recalculation,
       });
@@ -67,7 +67,7 @@ module.exports.cartsController = {
       res.status(401).json('Ошибка ' + e.toString());
     }
   },
-  deleteCartItem: async (req, res) => {
+  deleteItemFromCart: async (req, res) => {
     try {
       const cart = await Cart.findOne({ user: req.user.id });
       const item = cart.product.rents.filter(

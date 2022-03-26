@@ -2,7 +2,7 @@ const User = require('../models/User.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Cart = require('../models/Cart.model');
-const Purchased = require('../models/Purchased.model');
+const Purchased = require('../models/Order.model');
 
 module.exports.usersController = {
   getAllUsers: async (req, res) => {
@@ -32,7 +32,7 @@ module.exports.usersController = {
         user: user._id,
       });
 
-      await Purchased.create({
+      await Order.create({
         user: user._id,
       });
 

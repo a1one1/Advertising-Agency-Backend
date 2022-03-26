@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const purchasedSchema = mongoose.Schema({
+const orderSchema = mongoose.Schema({
   phoneClient: {
     type: Number,
   },
@@ -14,6 +14,6 @@ const purchasedSchema = mongoose.Schema({
   },
 });
 
-const Purchased = mongoose.model('Purchased', purchasedSchema);
+const Order = mongoose.model('Order', orderSchema);
 
-module.exports = Purchased;
+module.exports = Order;

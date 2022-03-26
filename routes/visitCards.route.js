@@ -6,7 +6,7 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 const router = Router();
 
-router.post('/visitcard/:id', authMiddleware, visitCardsController.addVisitCard);
-router.delete('/visitcard/:id', authMiddleware, visitCardsController.deleteVisitCard);
+router.post('/visitcard/:id', authMiddleware, visitCardsController.addVisitCardToCart);
+router.delete('/visitcard/:id', authMiddleware, visitCardsController.deleteVisitCardFromCart);
 
 module.exports = router;

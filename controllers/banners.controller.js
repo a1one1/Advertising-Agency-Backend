@@ -1,11 +1,11 @@
+const Banner = require('../models/Banner.model');
 const Cart = require('../models/Cart.model');
-const visitCard = require('../models/VisitCard.model');
 
-module.exports.visitCardsController = {
-  addVisitCardToCart: async (req, res) => {
+module.exports.bannersController = {
+  addBannerToCart: async (req, res) => {
     try {
       const { typePaper, count, delivery, price } = req.body;
-      const visit = await visitCard.create({
+      const banner = await Banner.create({
         typePaper,
         count,
         delivery,
@@ -16,22 +16,21 @@ module.exports.visitCardsController = {
       await cart.update({
         product: {
           ...cart.product,
-          sales: [...cart.product.sales, visit]
+          sales: [...cart.product.sales, banner]
         },
         total: result
       });
-      const cartRes = await Cart.findOne({ user: req.user.id });
-      res.json(visit);
+      res.json(banner);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
   },
 
-  deleteVisitCardFromCart: async (req, res) => {
+  deleteBannerFromCart: async (req, res) => {
     try {
-      const visit = await visitCard.findById(req.params.id);
-      const price = visit.price
-      visit.remove()
+      const banner = await Banner.findById(req.params.id);
+      const price = banner.price
+      banner.remove()
       const cart = await Cart.findOne({user: req.user.id});
       const sales = cart.product.sales.filter(sale => {
         return String(sale._id) !== req.params.id
@@ -44,7 +43,7 @@ module.exports.visitCardsController = {
         },
         total: result
       })
-      res.json(visit)
+      res.json(banner)
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }

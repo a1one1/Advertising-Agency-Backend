@@ -1,35 +1,35 @@
 const Cart = require('../models/Cart.model');
-const Purchased = require('../models/Purchased.model');
+const Order = require('../models/Order.model');
 const User = require('../models/User.model');
 
-module.exports.purchasedsController = {
-  getAllPurchaseds: async (req, res) => {
+module.exports.ordersController = {
+  getAllOrders: async (req, res) => {
     try {
-      const purchaseds = await Purchased.find();
-      res.json(purchaseds);
+      const orders = await Order.find();
+      res.json(orders);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
   },
-  getIdPurchased: async (req, res) => {
+  getOrderById: async (req, res) => {
     try {
-      const purchased = await Purchased.findOne({ user: req.user.id });
-      res.json(purchased);
+      const order = await Order.findOne({ user: req.user.id });
+      res.json(order);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
   },
-  addItemsToPurchased: async (req, res) => {
+  addItemToOrder: async (req, res) => {
     try {
       const client = await User.findOne({ _id: req.user.id });
       const cart = await Cart.findOne({ user: req.user.id });
-      const purchased = await Purchased.findOne({ user: req.user.id });
-      await purchased.update({
+      const order = await Order.findOne({ user: req.user.id });
+      await order.update({
         phoneClient: client.phone,
         buy: {
-          ...purchased.buy,
-          rents: [...purchased.buy.rents, ...cart.product.rents],
-          sales: [...purchased.buy.sales, ...cart.product.sales],
+          ...order.buy,
+          rents: [...order.buy.rents, ...cart.product.rents],
+          sales: [...order.buy.sales, ...cart.product.sales],
         },
       });
       await cart.update({
@@ -39,7 +39,7 @@ module.exports.purchasedsController = {
         },
         total: 0,
       });
-      res.json(purchased);
+      res.json(order);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
