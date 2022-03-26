@@ -17,5 +17,11 @@ router.patch(
 );
 router.delete('/cart/delete/rent', authMiddleware, cartsController.deleteItemFromCart)
 router.get('/cart/user', authMiddleware, cartsController.getCartById);
+router.delete(
+  '/cart/delete/rent',
+  authMiddleware,
+  cartsController.deleteCartItem,
+);
+router.get('/cart/user', authMiddleware, cartsController.getIdCart);
 
 module.exports = router;

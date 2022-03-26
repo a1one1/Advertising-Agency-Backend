@@ -5,23 +5,22 @@ module.exports.visitCardsController = {
   addVisitCardToCart: async (req, res) => {
     try {
       const { typePaper, count, delivery, price } = req.body;
-      const visit = await visitCard.create({
+      const visitCrd = await visitCard.create({
         typePaper,
         count,
         delivery,
         price,
       });
       const cart = await Cart.findOne({ user: req.user.id });
-      const result = cart.total + price;
+      const recalculation = cart.total + price;
       await cart.update({
         product: {
           ...cart.product,
-          sales: [...cart.product.sales, visit]
+          sales: [...cart.product.sales, visitCrd],
         },
-        total: result
+        total: recalculation,
       });
-      const cartRes = await Cart.findOne({ user: req.user.id });
-      res.json(visit);
+      res.json(visitCrd);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
@@ -29,24 +28,24 @@ module.exports.visitCardsController = {
 
   deleteVisitCardFromCart: async (req, res) => {
     try {
-      const visit = await visitCard.findById(req.params.id);
-      const price = visit.price
-      visit.remove()
-      const cart = await Cart.findOne({user: req.user.id});
-      const sales = cart.product.sales.filter(sale => {
-        return String(sale._id) !== req.params.id
+      const visitCrd = await visitCard.findById(req.params.id);
+      const price = visitCrd.price;
+      visit.remove();
+      const cart = await Cart.findOne({ user: req.user.id });
+      const sales = cart.product.sales.filter((sale) => {
+        return String(sale._id) !== req.params.id;
       });
-      const result = cart.total - price
+      const recalculation = cart.total - price;
       await cart.update({
         product: {
           ...cart.product,
-          sales: sales
+          sales: sales,
         },
-        total: result
-      })
-      res.json(visit)
+        total: recalculation,
+      });
+      res.json(visitCrd);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
-  }
+  },
 };
