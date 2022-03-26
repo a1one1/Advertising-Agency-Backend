@@ -26,10 +26,10 @@ module.exports.cartsController = {
       newBillboard.sideA = req.body.sideA;
       newBillboard.sideB = req.body.sideB;
       const cart = await Cart.findOne({ user: req.user.id });
-      if (newsStFormat.sideA && newsStFormat.sideA) {
-        newsStFormat.price = newsStFormat.price * 2;
+      if (newBillboard.sideA && newBillboard.sideA) {
+        newBillboard.price = newBillboard.price * 2;
       }
-      const recalculation = (cart.total += newsStFormat.price);
+      const recalculation = (cart.total += newBillboard.price);
       await cart.update({
         product: {
           ...cart.product,
