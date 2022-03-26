@@ -23,6 +23,6 @@ const visitCardSchema = mongoose.Schema({
   },
 });
 
-const visitCard = mongoose.model('visitCard', visitCardSchema);
+const VisitCard = mongoose.model('VisitCard', visitCardSchema);
 
-module.exports = visitCard;
+module.exports = VisitCard;

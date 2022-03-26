@@ -1,11 +1,11 @@
 const Cart = require('../models/Cart.model');
-const visitCard = require('../models/VisitCard.model');
+const VisitCard = require('../models/VisitCard.model');
 
 module.exports.visitCardsController = {
   addVisitCardToCart: async (req, res) => {
     try {
       const { typePaper, count, delivery, price } = req.body;
-      const visitCrd = await visitCard.create({
+      const visit = await VisitCard.create({
         typePaper,
         count,
         delivery,
@@ -16,11 +16,11 @@ module.exports.visitCardsController = {
       await cart.update({
         product: {
           ...cart.product,
-          sales: [...cart.product.sales, visitCrd],
+          sales: [...cart.product.sales, visit],
         },
         total: recalculation,
       });
-      res.json(visitCrd);
+      res.json(visit);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
@@ -28,8 +28,8 @@ module.exports.visitCardsController = {
 
   deleteVisitCardFromCart: async (req, res) => {
     try {
-      const visitCrd = await visitCard.findById(req.params.id);
-      const price = visitCrd.price;
+      const visit = await VisitCard.findById(req.params.id);
+      const price = visit.price;
       visit.remove();
       const cart = await Cart.findOne({ user: req.user.id });
       const sales = cart.product.sales.filter((sale) => {
@@ -43,7 +43,7 @@ module.exports.visitCardsController = {
         },
         total: recalculation,
       });
-      res.json(visitCrd);
+      res.json(visit);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
