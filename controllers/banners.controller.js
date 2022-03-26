@@ -12,13 +12,13 @@ module.exports.bannersController = {
         price,
       });
       const cart = await Cart.findOne({ user: req.user.id });
-      const result = cart.total + price;
+      const recalculation = cart.total + price;
       await cart.update({
         product: {
           ...cart.product,
           sales: [...cart.product.sales, banner]
         },
-        total: result
+        total: recalculation
       });
       res.json(banner);
     } catch (e) {
@@ -35,13 +35,13 @@ module.exports.bannersController = {
       const sales = cart.product.sales.filter(sale => {
         return String(sale._id) !== req.params.id
       });
-      const result = cart.total - price
+      const recalculation = cart.total - price
       await cart.update({
         product: {
           ...cart.product,
           sales: sales
         },
-        total: result
+        total: recalculation
       })
       res.json(banner)
     } catch (e) {

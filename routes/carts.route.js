@@ -15,13 +15,13 @@ router.patch(
   authMiddleware,
   cartsController.addSTFormatToCart,
 );
-router.delete('/cart/delete/rent', authMiddleware, cartsController.deleteItemFromCart)
+router.patch('/cart/delete/rent', authMiddleware, cartsController.deleteItemFromCart)
 router.get('/cart/user', authMiddleware, cartsController.getCartById);
-router.delete(
-  '/cart/delete/rent',
-  authMiddleware,
-  cartsController.deleteCartItem,
-);
-router.get('/cart/user', authMiddleware, cartsController.getIdCart);
+// router.delete(
+//   '/cart/delete/rent',
+//   authMiddleware,
+//   cartsController.deleteCartItem,
+// );
+// router.get('/cart/user', authMiddleware, cartsController.getIdCart);
 
 module.exports = router;
