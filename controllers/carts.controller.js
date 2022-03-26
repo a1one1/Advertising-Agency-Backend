@@ -26,8 +26,7 @@ module.exports.cartsController = {
       newBillboard.sideA = req.body.sideA;
       newBillboard.sideB = req.body.sideB;
       const cart = await Cart.findOne({ user: req.user.id });
-      if (newBillboard.sideA && newBillboard.sideB) {
-        if (newBillboard.sideA && newBillboard.sideA) {
+        if (newBillboard.sideA && newBillboard.sideB) {
           newBillboard.price = newBillboard.price * 2;
         }
         const recalculation = (cart.total += newBillboard.price);
@@ -40,7 +39,6 @@ module.exports.cartsController = {
         });
         const json = await Cart.findOne({ user: req.user.id });
         res.json(json);
-      }
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
@@ -52,7 +50,7 @@ module.exports.cartsController = {
       newStFormat.sideA = req.body.sideA;
       newStFormat.sideB = req.body.sideB;
       const cart = await Cart.findOne({ user: req.user.id });
-      if (newStFormat.sideA && newStFormat.sideA) {
+      if (newStFormat.sideA && newStFormat.sideB) {
         newStFormat.price = newStFormat.price * 2;
       }
       const recalculation = (cart.total += newStFormat.price);
