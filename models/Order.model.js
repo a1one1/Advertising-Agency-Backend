@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
 
 const orderSchema = mongoose.Schema({
-  phoneClient: {
-    type: Number,
-  },
   buy: {
     sales: [],
     rents: [],
