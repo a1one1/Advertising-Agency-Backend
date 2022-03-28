@@ -11,6 +11,7 @@ module.exports.cartsController = {
       res.status(401).json('Ошибка ' + e.toString());
     }
   },
+
   getCartById: async (req, res) => {
     try {
       const cart = await Cart.findOne({ user: req.user.id });
@@ -19,54 +20,59 @@ module.exports.cartsController = {
       res.status(401).json('Ошибка ' + e.toString());
     }
   },
+
   addBillboardToCart: async (req, res) => {
+    const { selectedA, selectedB } = req.body;
     try {
       const billboard = await Billboard.findById(req.params.billboardId);
-      let newBillboard = billboard;
-      newBillboard.sideA = req.body.sideA;
-      newBillboard.sideB = req.body.sideB;
-      const cart = await Cart.findOne({ user: req.user.id });
-        if (newBillboard.sideA && newBillboard.sideB) {
-          newBillboard.price = newBillboard.price * 2;
-        }
-        const recalculation = (cart.total += newBillboard.price);
-        await cart.update({
-          product: {
-            ...cart.product,
-            rents: [...cart.product.rents, newBillboard],
-          },
-          total: recalculation,
-        });
-        const json = await Cart.findOne({ user: req.user.id });
-        res.json(json);
-    } catch (e) {
-      res.status(401).json('Ошибка ' + e.toString());
-    }
-  },
-  addSTFormatToCart: async (req, res) => {
-    try {
-      const stFormat = await StFormat.findById(req.params.stFormatId);
-      let newStFormat = stFormat;
-      newStFormat.sideA = req.body.sideA;
-      newStFormat.sideB = req.body.sideB;
-      const cart = await Cart.findOne({ user: req.user.id });
-      if (newStFormat.sideA && newStFormat.sideB) {
-        newStFormat.price = newStFormat.price * 2;
+      billboard.sideA.selected = selectedA;
+      billboard.sideB.selected = selectedB;
+      if (billboard.sideA.selected && billboard.sideB.selected) {
+        billboard.price *= 2;
       }
-      const recalculation = (cart.total += newStFormat.price);
+
+      const cart = await Cart.findOne({ user: req.user.id });
+      const recalculation = (cart.total += billboard.price);
       await cart.update({
         product: {
           ...cart.product,
-          rents: [...cart.product.rents, newStFormat],
+          rents: [...cart.product.rents, billboard],
         },
         total: recalculation,
       });
-      const json = await Cart.findOne({ user: req.user.id });
-      res.json(json);
+      res.json(billboard);
     } catch (e) {
       res.status(401).json('Ошибка ' + e.toString());
     }
   },
+
+  
+  addSTFormatToCart:async (req, res) => {
+    const { selectedA, selectedB } = req.body;
+    try {
+      const STFormat = await StFormat.findById(req.params.stFormatId);
+      STFormat.sideA.selected = selectedA;
+      STFormat.sideB.selected = selectedB;
+      if (STFormat.sideA.selected && STFormat.sideB.selected) {
+        STFormat.price *= 2;
+      }
+      console.log(STFormat);
+
+      const cart = await Cart.findOne({ user: req.user.id });
+      const recalculation = (cart.total += STFormat.price);
+      await cart.update({
+        product: {
+          ...cart.product,
+          rents: [...cart.product.rents, STFormat],
+        },
+        total: recalculation,
+      });
+      res.json(STFormat);
+    } catch (e) {
+      res.status(401).json('Ошибка ' + e.toString());
+    }
+  },
+
   deleteItemFromCart: async (req, res) => {
     try {
       const cart = await Cart.findOne({ user: req.user.id });

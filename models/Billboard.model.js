@@ -6,13 +6,25 @@ const billboardSchema = mongoose.Schema({
     default: 'Билборд',
   },
   sideA: {
-    type: Boolean,
-    default: true,
-  },
+    reserved: {
+      type: Boolean,
+      default: false,
+    },
+    selected: {
+      type: Boolean,
+      default: false,
+    },
+  }, 
   sideB: {
-    type: Boolean,
-    default: true,
-  },
+    reserved: {
+      type: Boolean,
+      default: false,
+    },
+    selected: {
+      type: Boolean,
+      default: false,
+    },
+  }, 
   image: String,
   address: String,
   price: Number,
