@@ -6,12 +6,24 @@ const stFormatSchema = mongoose.Schema({
     default: 'Сити-Формат',
   },
   sideA: {
-    type: Boolean,
-    default: true,
-  },
+    reserved: {
+      type: Boolean,
+      default: false,
+    },
+    selected: {
+      type: Boolean,
+      default: false,
+    },
+  }, 
   sideB: {
-    type: Boolean,
-    default: true,
+    reserved: {
+      type: Boolean,
+      default: false,
+    },
+    selected: {
+      type: Boolean,
+      default: false,
+    },
   },
   image: String,
   address: String,
