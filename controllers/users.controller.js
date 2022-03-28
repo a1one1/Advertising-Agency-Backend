@@ -2,7 +2,8 @@ const User = require('../models/User.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Cart = require('../models/Cart.model');
-const Purchased = require('../models/Order.model');
+const Order = require('../models/Order.model');
+
 
 module.exports.usersController = {
   getAllUsers: async (req, res) => {

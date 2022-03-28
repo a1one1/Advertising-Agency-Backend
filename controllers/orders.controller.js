@@ -19,7 +19,7 @@ module.exports.ordersController = {
       res.status(401).json('Ошибка ' + e.toString());
     }
   },
-  addItemToOrder: async (req, res) => {
+  addItemsToOrder: async (req, res) => {
     try {
       const client = await User.findOne({ _id: req.user.id });
       const cart = await Cart.findOne({ user: req.user.id });
