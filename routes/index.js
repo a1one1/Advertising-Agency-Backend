@@ -10,5 +10,6 @@ router.use(require('./users.route'));
 router.use(require('./visitCards.route'));
 router.use(require('./orders.route'));
 router.use(require('./banners.route'));
+router.use(require('./claims.route'));
 
 module.exports = router;
